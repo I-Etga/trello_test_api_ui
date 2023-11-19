@@ -3,11 +3,13 @@ package com.trello.steps;
 import com.trello.pages.BoardsPage;
 import com.trello.utility.BrowserUtilities;
 import com.trello.utility.ConfigurationReader;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebElement;
 
@@ -25,6 +27,7 @@ public class StepDefs_API {
     private static final String TOKEN = ConfigurationReader.getProperty("token");
     static String boardId;
 
+    RequestSpecification givenPart;
     Response response;
     ValidatableResponse thenPart;
 
@@ -57,13 +60,19 @@ public class StepDefs_API {
     }
 
 
+    @Given("User provides API key and token")
+    public void user_provides_api_key_and_token() {
+        givenPart = RestAssured.given()
+                .header("Content-Type", "application/json")
+                .queryParam("key", API_KEY)
+                .queryParam("token", TOKEN);
+    }
+
     @When("User creates a new Trello board via API with name {string}")
     public void user_creates_a_new_trello_board_api_with_name(String name) {
-        response = RestAssured.given()
-                .header("Content-Type", "application/json")
+
+        response = givenPart.when()
                 .queryParam("name", name)
-                .queryParam("key", API_KEY)
-                .queryParam("token", TOKEN)
                 .post(BASE_URL + "boards/").prettyPeek();
 
         boardId = response.then().extract().path("id");
@@ -84,9 +93,7 @@ public class StepDefs_API {
 
     @When("User deletes the Trello board via API")
     public void user_deletes_the_trello_board_via_api() {
-        response = RestAssured.given()
-                .queryParam("key", API_KEY)
-                .queryParam("token", TOKEN)
+        response = givenPart.when()
                 .delete(BASE_URL + "boards/" + boardId).prettyPeek();
 
         thenPart = response.then();
