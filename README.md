@@ -42,30 +42,6 @@ A `Hooks` class is integrated with Cucumber annotations (`@Before` and `@After`)
 Test data critical (such as: browser,username/password,url/environment,base-uri,api-key,token etc.)for the framework's operation is stored in the `configuration.properties` file. 
 The `ConfigurationReader` utility class facilitates reading and accessing this configuration data, supporting different test environments.
 
-## Test Cases
-
-### #tc1: UI-only Test
-
-1. Create a board on the UI.
-2. Check the existence of the board.
-3. Delete the board on the UI.
-4. Confirm the successful deletion.
-
-### #tc2: UI and API Test Combination
-
-1. Create a board via the API.
-2. Verify the existence of the board on the UI.
-
-### #tc3: API-only Test
-
-1. Create a board via the API.
-2. Delete the board via the API.
-3. Confirm the proper functioning of both API requests.
-
-## API Testing with Trello
-
-API testing is performed using Trello's API. An API key and token are obtained from Trello, and test cases are transitioned from manual testing in Postman to automated testing using the RestAssured library.
-
 ## Getting Started
 
 To run the tests, follow these steps:
