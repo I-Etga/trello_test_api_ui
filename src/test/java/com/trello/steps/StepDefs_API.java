@@ -7,25 +7,32 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
+
+import static io.restassured.RestAssured.config;
+import static io.restassured.config.ParamConfig.UpdateStrategy.REPLACE;
+import static io.restassured.config.ParamConfig.paramConfig;
 import static org.hamcrest.CoreMatchers.*;
 
 
 public class StepDefs_API {
 
     BoardsPage boardsPage = new BoardsPage();
-    static String name;
 
 
     private static final String BASE_URL = ConfigurationReader.getProperty("baseUri");
     private static final String API_KEY = ConfigurationReader.getProperty("api_key");
     private static final String TOKEN = ConfigurationReader.getProperty("token");
     static String boardId;
+    static String boardName;
+    static String listName;
 
     RequestSpecification givenPart;
     Response response;
@@ -46,7 +53,7 @@ public class StepDefs_API {
         for (WebElement board : boardsPage.boards) {
             String titleAttribute = board.getAttribute("title");
 
-            if (titleAttribute.contains(name)) {
+            if (titleAttribute.contains(boardName)) {
                 boardFound = true;
                 break;
             }
@@ -69,16 +76,19 @@ public class StepDefs_API {
     }
 
     @When("User creates a new Trello board via API with name {string}")
-    public void user_creates_a_new_trello_board_api_with_name(String name) {
+    public void user_creates_a_new_trello_board_api_with_name(String boardName) {
 
         response = givenPart.when()
-                .queryParam("name", name)
-                .post(BASE_URL + "boards/").prettyPeek();
+                .queryParam("name", boardName)
+                .post(BASE_URL + "boards/").
+                prettyPeek();
 
         boardId = response.then().extract().path("id");
 
-        StepDefs_API.name = name;
+
+        StepDefs_API.boardName = boardName;
         thenPart = response.then();
+
 
     }
 
@@ -86,7 +96,7 @@ public class StepDefs_API {
     public void the_trello_board_should_be_created_successfully_via_api() {
 
         thenPart.statusCode(200)
-                .body("name", equalTo(name))
+                .body("name", equalTo(boardName))
                 .body("id", notNullValue());
     }
 
@@ -104,6 +114,47 @@ public class StepDefs_API {
         thenPart.statusCode(200).
                 body("_value", nullValue());
 
+    }
+
+    @Then("User verifies through API if default lists exist on the board")
+    public void user_verifies_through_api_default_if_lists_exist_on_the_board(List<String> lists) {
+        response = givenPart
+                .when()
+                .get(BASE_URL + "boards/" + boardId + "/lists");
+
+        JsonPath jsonPath = response.then().extract().jsonPath();
+
+        List<String> namesList = jsonPath.getList("name");
+
+        Assertions.assertTrue(namesList.containsAll(lists));
+    }
+
+    @When("User creates a new list named {string} on the board via API")
+    public void user_creates_a_new_list_named_on_the_board_via_api(String listName) {
+
+        response = givenPart
+                .config(config().paramConfig(paramConfig().queryParamsUpdateStrategy(REPLACE))) //in order to overwrite query parameter
+                .queryParam("name", listName)
+                .post(BASE_URL + "boards/" + boardId + "/lists").prettyPeek();
+
+        StepDefs_API.listName = listName;
+
+        thenPart = response.then();
+
+    }
+
+    @Then("User verifies through API if the list exists on the board")
+    public void user_verifies_through_api_if_the_list_exists_on_the_board() {
+        response = givenPart
+                .when()
+                .get(BASE_URL + "boards/" + boardId + "/lists");
+
+        JsonPath jsonPath = response.then().extract().jsonPath();
+
+        List<String> namesList = jsonPath.getList("name");
+
+        System.out.println(namesList);
+        Assertions.assertTrue(namesList.contains(listName));
     }
 
 }
