@@ -34,6 +34,9 @@ public class StepDefs_API {
     static String boardName;
     static String listName;
 
+    List<String> defaultListOnNewBoard;
+    List<String> namesList;
+
     RequestSpecification givenPart;
     Response response;
     ValidatableResponse thenPart;
@@ -124,9 +127,12 @@ public class StepDefs_API {
 
         JsonPath jsonPath = response.then().extract().jsonPath();
 
-        List<String> namesList = jsonPath.getList("name");
+        namesList = jsonPath.getList("name");
 
+        defaultListOnNewBoard = lists;
         Assertions.assertTrue(namesList.containsAll(lists));
+
+
     }
 
     @When("User creates a new list named {string} on the board via API")
@@ -151,10 +157,21 @@ public class StepDefs_API {
 
         JsonPath jsonPath = response.then().extract().jsonPath();
 
-        List<String> namesList = jsonPath.getList("name");
+        namesList = jsonPath.getList("name");
 
-        System.out.println(namesList);
         Assertions.assertTrue(namesList.contains(listName));
     }
+
+    @Then("User verifies through UI if a new list exists on the board")
+    public void user_verifies_through_ui_if_a_new_list_exists_on_the_board() {
+
+        BrowserUtilities.waitFor(3);
+        for (WebElement eachList : boardsPage.listsNewBoard) {
+            String list = eachList.getText();
+            Assertions.assertTrue(namesList.contains(list));
+            BrowserUtilities.waitFor(1);
+        }
+    }
+
 
 }

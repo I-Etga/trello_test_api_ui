@@ -94,4 +94,11 @@ public class StepDeps_UI {
         }
     }
 
+    @Then("User clicks last created board")
+    public void user_clicks_last_created_board() {
+       BrowserUtilities.waitFor(3);
+       boardsPage.lastCreatedBoard.click();
+
+    }
+
 }

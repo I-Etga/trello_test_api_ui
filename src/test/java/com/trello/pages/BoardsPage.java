@@ -48,6 +48,10 @@ public class BoardsPage {
     @FindBy(xpath = "//*[@id='popover-boundary']/div/nav/div[1]/div/div/div[2]/div/div[3]/ul/button")
     public WebElement showMoreButton;
 
+    @FindBy(xpath = "//*[@id=\"content\"]/div/div[2]/div/div/div/div/div/div/div/div[2]/div/div[2]/ul/li[1]/a")
+    public WebElement lastCreatedBoard;
 
+    @FindBy(xpath = "//div[@class='mKJWg6W_CLHoiO']/h2")
+    public List<WebElement> listsNewBoard;
 
 }
