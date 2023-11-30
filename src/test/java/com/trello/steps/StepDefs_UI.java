@@ -7,16 +7,15 @@ import com.trello.utility.ConfigurationReader;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.jupiter.api.Assertions;
+import org.junit.Assert;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
-public class StepDeps_UI {
+public class StepDefs_UI {
 
     BoardsPage boardsPage = new BoardsPage();
     LoginPage loginPage = new LoginPage();
 
-    static String name;
     private static final String USERNAME = ConfigurationReader.getProperty("username");
     private static final String PASSWORD = ConfigurationReader.getProperty("password");
 
@@ -41,8 +40,7 @@ public class StepDeps_UI {
         BrowserUtilities.waitFor(3);
         boardsPage.submitButton.click();
         BrowserUtilities.waitFor(3);
-        StepDeps_UI.name = name;
-
+        StepDefs_API.boardName= name;
 
     }
 
@@ -64,33 +62,29 @@ public class StepDeps_UI {
     @Then("User checks if the Trello board exists on the UI")
     public void user_checks_if_the_trello_board_exists_on_the_ui() {
         BrowserUtilities.waitFor(4);
-
         boolean boardFound = false;
 
         for (WebElement board : boardsPage.boards) {
             String titleAttribute = board.getAttribute("title");
 
-            if (titleAttribute.contains(name)) {
+            if (titleAttribute.contains(StepDefs_API.boardName)) {
                 boardFound = true;
                 break;
             }
         }
 
-        if (boardFound) {
-            Assertions.assertTrue(true, "Board with title containing the specified name exists");
-        } else {
-            Assertions.assertTrue(false, "No board with title containing the specified name found");
-        }
+        Assert.assertTrue("No board with title containing the specified name found",boardFound);
+
     }
 
     @Then("The Trello board should be deleted successfully on the UI")
-    public void the_trello_board_should_be_deleted_successfully_on_the_ui() throws InterruptedException {
+    public void the_trello_board_should_be_deleted_successfully_on_the_ui() {
         BrowserUtilities.waitFor(3);
         boardsPage.boardsButton.click();
         BrowserUtilities.waitFor(3);
 
         for (WebElement board : boardsPage.boards) {
-            Assertions.assertFalse(board.getAttribute("title").contains(name));
+            Assert.assertFalse(board.getAttribute("title").contains(StepDefs_API.boardName));
         }
     }
 

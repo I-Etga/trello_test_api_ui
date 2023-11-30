@@ -55,11 +55,6 @@
             <artifactId>reporting-plugin</artifactId>
             <version>7.2.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>5.10.0</version>
-        </dependency>
 
     </dependencies>
 
@@ -71,13 +66,13 @@
                 <version>3.0.0-M5</version>
                 <configuration>
                     <parallel>methods</parallel>
-                    <threadCount>4</threadCount>
+                    <useUnlimitedThreads>true</useUnlimitedThreads>
                     <testFailureIgnore>true</testFailureIgnore>
+                    <runOrder>Alphabetical</runOrder>
                     <includes>
-                        <include>**/CukesRunner*.java</include>
+                        <include>**/*CukesRunner.java</include>
                     </includes>
                 </configuration>
-
             </plugin>
         </plugins>
     </build>

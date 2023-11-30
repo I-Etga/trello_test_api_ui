@@ -49,7 +49,24 @@ To run the tests, follow these steps:
 1. Clone the repository.
 2. Set up the necessary dependencies using Maven: `mvn clean install`.
 3. Configure test data in `configuration.properties`.
-4. Run the tests: `mvn test`.
+4. Running Tests with Specific Tags and Browser
+
+To execute the tests with specific Cucumber tags or in a chosen browser, use the following commands:
+
+- Run tests in a specific browser (e.g., Chrome):
+```bash
+   mvn test -Dbrowser=chrome
+   ```
+- Run tests with specific Cucumber tags:
+  ```bash
+    mvn test -Dcucumber.filter.tags="@your_tag"
+    ```
+
+- Run tests in a specific browser (e.g., Chrome):
+ ```bash
+  mvn test -Dcucumber.filter.tags="@your_tag" -Dbrowser=chrome
+   ```
+   *These commands will execute the tests with the specified Cucumber tags and in the chosen browser, based on your configuration. Ensure the configuration.properties file contains relevant test data before running the tests.
 
 ## Contributors
 

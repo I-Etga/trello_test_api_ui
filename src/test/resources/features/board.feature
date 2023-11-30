@@ -25,7 +25,7 @@ Feature: Trello Board Operations
   @tc3
   Scenario: Create and Delete Trello Board via API
     Given User provides API key and token
-    When User creates a new Trello board via API with name "API Test Trello"
+    When User creates a new Trello board via API with name "API Test"
     Then The Trello board should be created successfully via API
     When User deletes the Trello board via API
     Then The Trello board should be deleted successfully via API

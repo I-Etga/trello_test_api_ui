@@ -1,5 +1,4 @@
 Feature: Create list on the Board
-  As a user, I want the capability to create a new list on a board in order to organize tasks or items effectively.
 
   @tc4 @ui
   Scenario: User creates a Board and sees default list on that board
@@ -12,7 +11,6 @@ Feature: Create list on the Board
       | Done  |
     And User clicks last created board
     And User verifies through UI if a new list exists on the board
-    And User deletes the Trello board via API
 
   @tc5 @ui
   Scenario: User creates a Board and a list on that board
@@ -23,4 +21,3 @@ Feature: Create list on the Board
     And User clicks last created board
     Then User verifies through API if the list exists on the board
     And User verifies through UI if a new list exists on the board
-    And User deletes the Trello board via API

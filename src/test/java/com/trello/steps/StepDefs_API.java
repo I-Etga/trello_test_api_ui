@@ -11,7 +11,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
-import org.junit.jupiter.api.Assertions;
+import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -34,8 +34,8 @@ public class StepDefs_API {
     static String boardName;
     static String listName;
 
-    List<String> defaultListOnNewBoard;
-    List<String> namesList;
+    List<String> ListOnNewBoardUI;
+    List<String> namesListApi;
 
     RequestSpecification givenPart;
     Response response;
@@ -56,17 +56,14 @@ public class StepDefs_API {
         for (WebElement board : boardsPage.boards) {
             String titleAttribute = board.getAttribute("title");
 
-            if (titleAttribute.contains(boardName)) {
+            if (titleAttribute.contains(StepDefs_API.boardName)) {
                 boardFound = true;
                 break;
             }
         }
 
-        if (boardFound) {
-            Assertions.assertTrue(true, "Board with title containing the specified name exists");
-        } else {
-            Assertions.assertTrue(false, "No board with title containing the specified name found");
-        }
+        Assert.assertTrue("No board with title containing the specified name found", boardFound);
+
     }
 
 
@@ -83,8 +80,8 @@ public class StepDefs_API {
 
         response = givenPart.when()
                 .queryParam("name", boardName)
-                .post(BASE_URL + "boards/").
-                prettyPeek();
+                .post(BASE_URL + "boards/")
+                .prettyPeek();
 
         boardId = response.then().extract().path("id");
 
@@ -127,10 +124,10 @@ public class StepDefs_API {
 
         JsonPath jsonPath = response.then().extract().jsonPath();
 
-        namesList = jsonPath.getList("name");
+        namesListApi = jsonPath.getList("name");
 
-        defaultListOnNewBoard = lists;
-        Assertions.assertTrue(namesList.containsAll(lists));
+        ListOnNewBoardUI = lists;
+        Assert.assertTrue(namesListApi.containsAll(lists));
 
 
     }
@@ -157,9 +154,9 @@ public class StepDefs_API {
 
         JsonPath jsonPath = response.then().extract().jsonPath();
 
-        namesList = jsonPath.getList("name");
+        namesListApi = jsonPath.getList("name");
 
-        Assertions.assertTrue(namesList.contains(listName));
+        Assert.assertTrue(namesListApi.contains(listName));
     }
 
     @Then("User verifies through UI if a new list exists on the board")
@@ -168,7 +165,7 @@ public class StepDefs_API {
         BrowserUtilities.waitFor(3);
         for (WebElement eachList : boardsPage.listsNewBoard) {
             String list = eachList.getText();
-            Assertions.assertTrue(namesList.contains(list));
+            Assert.assertTrue(namesListApi.contains(list));
             BrowserUtilities.waitFor(1);
         }
     }
