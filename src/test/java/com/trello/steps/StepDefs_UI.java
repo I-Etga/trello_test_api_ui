@@ -26,7 +26,8 @@ public class StepDefs_UI {
         loginPage.username.sendKeys(USERNAME + Keys.ENTER);
 
         BrowserUtilities.waitFor(1);
-        loginPage.password.sendKeys(PASSWORD + Keys.ENTER);
+        loginPage.password.sendKeys(PASSWORD);
+        loginPage.loginButton.click();
 
     }
 

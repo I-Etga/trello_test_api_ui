@@ -76,17 +76,17 @@ public class StepDefs_API {
     }
 
     @When("User creates a new Trello board via API with name {string}")
-    public void user_creates_a_new_trello_board_api_with_name(String boardName) {
+    public void user_creates_a_new_trello_board_api_with_name(String board_name) {
 
         response = givenPart.when()
-                .queryParam("name", boardName)
+                .queryParam("name", board_name)
                 .post(BASE_URL + "boards/")
                 .prettyPeek();
 
         boardId = response.then().extract().path("id");
 
 
-        StepDefs_API.boardName = boardName;
+        boardName = board_name;
         thenPart = response.then();
 
 
@@ -133,14 +133,14 @@ public class StepDefs_API {
     }
 
     @When("User creates a new list named {string} on the board via API")
-    public void user_creates_a_new_list_named_on_the_board_via_api(String listName) {
+    public void user_creates_a_new_list_named_on_the_board_via_api(String list_name) {
 
         response = givenPart
                 .config(config().paramConfig(paramConfig().queryParamsUpdateStrategy(REPLACE))) //in order to overwrite query parameter
-                .queryParam("name", listName)
+                .queryParam("name", list_name)
                 .post(BASE_URL + "boards/" + boardId + "/lists").prettyPeek();
 
-        StepDefs_API.listName = listName;
+        listName = list_name;
 
         thenPart = response.then();
 

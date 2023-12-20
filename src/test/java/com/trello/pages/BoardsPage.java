@@ -13,36 +13,36 @@ public class BoardsPage {
         PageFactory.initElements(Driver.getDriver(), this);
     }
 
-    @FindBy(xpath = "//button[@data-testid='header-create-menu-button']")
+    @FindBy(xpath = "//button[@aria-label='Create board or Workspace']")
     public WebElement createBoardOrWorkspace;
 
     @FindBy(xpath = "//button[@data-testid='header-create-board-button']")
     public WebElement createBoardButton;
 
-    @FindBy(xpath = "/html/body/div[3]/div/section/div/form/div[1]/label/input")
+    @FindBy(xpath = "//input[@data-testid = 'create-board-title-input']")
     public WebElement createBoardInput;
 
-    @FindBy(xpath = "//button[@data-testid='create-board-submit-button']")
+    @FindBy(xpath = "//button[@data-testid = 'create-board-submit-button']")
     public WebElement submitButton;
-    @FindBy(xpath = "//*[@id='content']/div/div[1]/div[1]/div/div/span[2]/button[2]")
+    @FindBy(xpath = "//button[@aria-label='Show menu']")
     public WebElement showMenu;
 
-    @FindBy(xpath = "//*[@id='content']/div/div[2]/div/div/div[2]/div/ul/li[17]/a")
+    @FindBy(xpath = "//a[@class='board-menu-navigation-item-link board-menu-navigation-item-link-v2 js-close-board']")
     public WebElement closeBoard;
 
-    @FindBy(xpath = "//*[@id='chrome-container']/div[4]/div/div[2]/div/div/div/input")
+    @FindBy(xpath = "//input[@class='js-confirm full nch-button nch-button--danger']")
     public WebElement closeBoard2;
 
-    @FindBy(xpath = "//*[@id='content']/div/div/div/div/div/div[2]/button")
+    @FindBy(xpath = "//button[@data-testid='close-board-delete-board-button']")
     public WebElement permanentlyDelete;
 
-    @FindBy(xpath = "/html/body/div[3]/div/section/div/button")
+    @FindBy(xpath = "//button[@data-testid='close-board-delete-board-confirm-button']")
     public WebElement confirmDelete;
 
-    @FindBy(xpath = "//*[@id='content']/div/div[2]/div/div/div/div/div/div/div/div[2]/div/div[1]/div[2]/a[1]")
+    @FindBy(xpath = "//a[@data-testid='home-team-boards-tab']")
     public WebElement boardsButton;
 
-    @FindBy(xpath = "//*[@id='popover-boundary']/div/nav/div[1]/div/div/div[2]/div/div[3]/ul/div[2]/li/a")
+    @FindBy(xpath = "//div[@class='jv7QDCKI8FPToj']/li/a")
     public List<WebElement> boards;
 
     @FindBy(xpath = "//*[@id='popover-boundary']/div/nav/div[1]/div/div/div[2]/div/div[3]/ul/button")
